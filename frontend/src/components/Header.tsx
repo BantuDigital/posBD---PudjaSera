@@ -6,16 +6,16 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         {/* Tombol menu mobile */}
         {onMenuClick && (
           <button
-            className="md:hidden bg text-blue-600    p-2 rounded                                                                                                                                                 focus:outline-none"
+            className="md:hidden bg text-teal-600    p-2 rounded                                                                                                                                                 focus:outline-none"
             onClick={onMenuClick}
             aria-label="Buka menu"
           >
             <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
         )}
-        <h1 className="text-base md:text-xl font-bold text-blue-700"> Mealikmu</h1>
+        <h1 className="text-base md:text-xl font-bold text-teal-700"> PudjaSera</h1>
       </div>
-      <div className="text-gray-500 text-xs md:text-base">Selamat datang 👋</div>
+      <div className="text-gray-500 text-xs md:text-base">Selamat datang !</div>
     </header>
   );
 }

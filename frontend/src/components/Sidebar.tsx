@@ -3,6 +3,7 @@ type SidebarProps = {
     setOpen: (open: boolean) => void;
 };
 
+import { ArrowLeftRight, BanknoteArrowDown, LayoutDashboard, LogOut, ShoppingCart } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -23,12 +24,15 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
                     </button>
                 </div>
                 <nav className="flex-1 space-y-1">
-                    <NavLink to="/dashboard" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50'}`}>Dashboard</NavLink>
-                    <NavLink to="/product" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50'}`}>Produk</NavLink>
-                    <NavLink to="/transaction" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50'}`}>Transaksi</NavLink>
-                    <NavLink to="/operasional" onClick={() => Swal.fire("Coming Soon")} className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50'}`}>Operasional</NavLink>
+                    <NavLink to="/dashboard" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <LayoutDashboard /> Dashboard</NavLink>
+                    <NavLink to="/product" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <ShoppingCart /> Produk</NavLink>
+                    <NavLink to="/transaction" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <ArrowLeftRight /> Transaksi</NavLink>
+                    <NavLink to="/operasional" onClick={() => Swal.fire("Coming Soon")} className={({ isActive }) => `block  py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <BanknoteArrowDown /> Operasional</NavLink>
                 </nav>
-                <button onClick={logout} className="mt-8 py-2 px-4 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition text-left font-semibold">Logout</button>
+                    <div className="flex justify-between  rounded-full bg-teal-700 p-6">
+                        <div onClick={logout} className="px-4 h-fit text-white rounded-lg hover:bg-teal-100 transition font-semibold cursor-pointer">Logout</div>
+                        <LogOut className='text-white' />
+                    </div>
             </aside>
         </>
     );

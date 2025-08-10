@@ -25,27 +25,21 @@ class DashboardController extends Controller
 
         // Total penjualan
         $totalPenjualan = (clone $trxQuery)
-            ->join('product_transactions', 'transactions.id', '=', 'product_transactions.transaction_id')
-            ->sum(DB::raw('product_transactions.harga_jual * product_transactions.quantity'));
+            ->sum(DB::raw('harga_jual * quantity'));
 
         // Jumlah order
         $jumlahOrder = (clone $trxQuery)->count();
 
         // Total laba kotor (penjualan - total COGS)
         $totalCOGS = (clone $trxQuery)
-            ->join('product_transactions', 'transactions.id', '=', 'product_transactions.transaction_id')
-            ->sum(DB::raw('product_transactions.harga_modal * product_transactions.quantity'));
+            ->sum(DB::raw('harga_modal * quantity'));
         $labaKotor = $totalPenjualan - $totalCOGS;
 
         // Jumlah produk terjual
         $produkTerjual = (clone $trxQuery)
-            ->join('product_transactions', 'transactions.id', '=', 'product_transactions.transaction_id')
-            ->sum('product_transactions.quantity');
+            ->sum('quantity');
 
-        // Order pending (status = 'pending')
-        $orderPending = DB::table('transactions')
-            ->where('status', 'pending')
-            ->count();
+        
 
         // Cari produk dengan stok di bawah 5
         $produkLowStock = DB::table('products')
@@ -62,7 +56,6 @@ class DashboardController extends Controller
             'jumlahOrder' => $jumlahOrder,
             'labaKotor' => $labaKotor,
             'produkTerjual' => $produkTerjual,
-            'orderPending' => $orderPending,
             'warningLowStock' => $warningLowStock,
             'produkLowStock' => $produkLowStock,
         ]);

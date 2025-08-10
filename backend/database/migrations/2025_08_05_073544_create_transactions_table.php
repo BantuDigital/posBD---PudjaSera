@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,8 +12,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('transaction_number')->unique(); // Unique transaction number
-            $table->date('transaction_date'); // Date of the transaction
+            $table->foreignId('product_id')->constrained('products')->onDelete('restrict'); // Foreign key to the products table
+            $table->date('transaction_date'); // Date of the transaction    
+            $table->decimal('quantity', 10, 2); // Quantity of the product in the transaction
+            $table->decimal('harga_jual', 10, 2); // Price of the product at the time of the transaction
+            $table->decimal('harga_modal', 10, 2); // Price of the product at the time of the transaction
+            $table->text('notes')->nullable(); // Additional notes for the transaction
             $table->timestamps();
         });
     }

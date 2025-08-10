@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Models\Buyer;
+use Exception;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -17,26 +17,31 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $query = DB::table('transactions')
-            ->join('buyers', 'transactions.buyer_id', '=', 'buyers.id')
-            ->join('product_transactions', 'transactions.id', '=', 'product_transactions.transaction_id')
-            ->join('products', 'product_transactions.product_id', '=', 'products.id')
+            ->join('products', 'transactions.product_id', '=', 'products.id')
             ->select(
                 'transactions.id',
-                'transactions.transaction_number',
                 'transactions.transaction_date',
-                'transactions.status',
-                'buyers.name as buyer_name',
-                'product_transactions.quantity',
-                DB::raw('(products.harga_jual * product_transactions.quantity) as total_harga')
-            );
+                'transactions.quantity',
+                'transactions.notes',
+                'transactions.harga_modal',
+                'transactions.harga_jual',
+                'products.name'
+            )->groupBy('transactions.id');
 
-        // Search by transaction number or buyer name
+        // Search by transaction number or product name
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('transactions.transaction_number', 'like', "%$search%")
-                    ->orWhere('buyers.name', 'like', "%$search%");
+                $q->Where('products.name', 'like', "%$search%");
             });
+        }
+
+        // Filter by date range
+        if ($request->has('date_from')) {
+            $query->where('transactions.transaction_date', '>=', $request->input('date_from'));
+        }
+        if ($request->has('date_to')) {
+            $query->where('transactions.transaction_date', '<=', $request->input('date_to'));
         }
 
         // Filter terbaru/terlama
@@ -50,99 +55,49 @@ class TransactionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      */
-    public function status(Request $request, Transaction $transaction)
+    public function show(Transaction $transaction)
     {
-        $validated = $request->validate([
-            'status' => 'required|in:completed,cancelled',
-        ]);
-
-        DB::beginTransaction();
-        try {
-            if ($validated['status'] == 'cancelled') {
-                // If cancelled, revert stock for all products in the transaction
-                $productTransactions = ProductTransaction::where('transaction_id', $transaction->id)->get();
-                foreach ($productTransactions as $productTransaction) {
-                    $product = Product::findOrFail($productTransaction->product_id);
-                    $product->stock += $productTransaction->quantity; // Revert stock
-                    $product->save();
-                }
-            }
-            $transaction->status = $validated['status'];
-            $transaction->save();
-            DB::commit();
-            return response()->json($transaction);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['error' => 'Gagal mengubah status transaksi: ' . $e->getMessage()], 500);
-        }
+        return response()->json($transaction);
     }
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'buyer_id' => 'nullable|exists:buyers,id',
-            'buyer_name' => 'required',
-            'buyer_phone' => 'nullable',
-            'buyer_address' => 'nullable',
-            'status' => 'required|in:process,completed,cancelled',
-            'products' => 'required|array',
-        ]);
+            'date' => 'required|date',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'notes' => 'nullable|string'
 
+        ]);
 
         DB::beginTransaction();
         try {
-            $buyer = Buyer::where('id', $validated['buyer_id'])->first();
-
-            if (!$buyer) {
-                $buyer = new Buyer();
-                $buyer->name = $validated['buyer_name'];
-                $buyer->phone = $validated['buyer_phone'] ?? null;
-                $buyer->address = $validated['buyer_address'] ?? null;
-                $buyer->save();
+            $product = Product::where('id',$validated['product_id'])->first();
+            if ($product->stock - $validated['quantity'] < 0) {
+                # code... 
+                throw new Exception("Stock tidak mencukupi");
+                
             }
-            if ($buyer) {
-                if ($validated['buyer_phone'] || $validated['buyer_address']) {
-                    $buyer->phone = $validated['buyer_phone'] ?? null;
-                    $buyer->address = $validated['buyer_address'] ?? null;
-                    $buyer->save();
-                }
-            }
-
-
+            $product->stock-=$validated['quantity'];
+            $product->save();
             $transaction = new Transaction();
-            $transaction->transaction_number = 'TRX-' . strtoupper(uniqid());
-            $transaction->transaction_date = now();
-            $transaction->buyer_id = $buyer->id;
-            $transaction->status = $validated['status'];
+            
+            $transaction->transaction_date = $validated['date']; // Use the date from frontend
+            $transaction->product_id = $validated['product_id'];
+            $transaction->quantity = $validated['quantity'];
+            $transaction->harga_jual = $product->harga_jual;
+            $transaction->harga_modal = $product->harga_modal;
+            $transaction->notes = $validated['notes'] || null;
             $transaction->save();
 
-            // Assuming products are passed as an array of product IDs and quantities
-            foreach ($request->input('products') as $product) {
-                $productExists = Product::findOrFail($product['value']);
-                $productExists->stock -= $product['qty'];
-                if ($productExists->stock < 0) {
-                    throw new \Exception('Stock tidak cukup untuk produk: ' . $productExists->name);
-                }
-                $productExists->save();
 
-                $productTransaction = new ProductTransaction();
-                $productTransaction->transaction_id = $transaction->id;
-                $productTransaction->product_id = $product['value'];
-                $productTransaction->quantity = $product['qty'];
-                $productTransaction->harga_jual = $productExists->harga_jual;
-                $productTransaction->harga_modal = $productExists->harga_modal;
-                $productTransaction->notes = $product['notes'] ?? null; // Optional notes
-                $productTransaction->save();
-            }
             DB::commit();
-            return response()->json($transaction, 201);
-        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Transaksi berhasil dibuat',
+                'data' => $transaction
+            ], 201);
+        } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Gagal : ' . $e->getMessage()], 500);
         }
@@ -151,10 +106,6 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

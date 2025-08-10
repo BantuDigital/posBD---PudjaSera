@@ -63,9 +63,9 @@ export default function AuthPage() {
       <div className="w-full max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-10">
         <div className="flex flex-col items-center mb-8">
           <span className="text-teal-700 text-3xl font-extrabold tracking-widest select-none mb-2">PudjaSera</span>
-          <h2 className="text-xl font-bold text-gray-800 mb-1">
+          {/* <h2 className="text-xl font-bold text-teal-800 mb-1">
             {mode === 'login' ? 'Login' : 'Lupa Password'}
-          </h2>
+          </h2> */}
           <p className="text-gray-400 text-sm mb-2">
             {mode === 'login' ? 'Masuk ke akun Anda' : 'Masukkan email untuk reset password'}
           </p>
@@ -107,14 +107,14 @@ export default function AuthPage() {
         <div className="mt-6 text-center">
           {mode === 'login' ? (
             <button
-              className="text-teal-600 hover:underline text-sm"
+              className="text-teal-600  text-sm"
               onClick={() => { setMode('forgot'); setError(''); setSuccess(''); }}
             >
               Lupa password?
             </button>
           ) : (
             <button
-              className="text-teal-600 hover:underline text-sm"
+              className="text-teal-600  text-sm"
               onClick={() => { setMode('login'); setError(''); setSuccess(''); }}
             >
               Kembali ke login

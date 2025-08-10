@@ -8,7 +8,7 @@ import axios from 'axios';
 // axios.defaults.baseURL="https://api-mealikmu.bantudigital.org/api";
 // const storageLink = "https://api-mealikmu.bantudigital.org/public";
 axios.defaults.baseURL = "http://localhost:8000/api";
-const storageLink = "http://localhost:8000/api";
+const storageLink = "";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

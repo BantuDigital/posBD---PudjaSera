@@ -20,6 +20,7 @@ interface Product {
 const AddProduct = () => {
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [product, setProduct] = useState<Product>({
         name: '',
         harga_jual: 0,
@@ -34,6 +35,7 @@ const AddProduct = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsLoading(true)
         const formData = new FormData();
         // Explicitly handle each field in the product object, skip 'price' (already appended)
         formData.append('name', product.name);
@@ -76,6 +78,8 @@ const AddProduct = () => {
                     text: 'Gagal menambahkan produk : ' + error.response.data.message,
                 });
             }
+        } finally{
+            setIsLoading(false)
         }
     };
 
@@ -86,7 +90,7 @@ const AddProduct = () => {
                 <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
                 <div className="flex-1 flex flex-col">
                     <main className="flex-1 p-4 md:p-8 bg-white">
-                        <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-700">Tambah Produk</h2>
+                        <h2 className="text-xl md:text-2xl font-bold mb-4 text-teal-700">Tambah Produk</h2>
                         <form className="space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Nama Produk <span className='text-red-500'>*</span></label>
@@ -134,7 +138,7 @@ const AddProduct = () => {
                                 }} className="mt-1 block w-full border p-2 rounded" />
                             </div>
 
-                            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full">Simpan</button>
+                            <button disabled={isLoading} type="submit" className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600 w-full">{isLoading ? 'Loading...' : 'Simpan'}</button>
                         </form>
                         <h3 className='mt-4 font-bold'>
                             Keterangan :

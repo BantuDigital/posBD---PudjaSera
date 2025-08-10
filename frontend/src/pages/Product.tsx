@@ -57,7 +57,7 @@ const Product = () => {
                                 placeholder="Search..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="border p-2 rounded w-full md:w-1/2 mb-3"
+                                className="border p-2 rounded  w-full md:w-1/2 mb-3"
                             />
                             <select
                                 value={`${sortBy}:${sortOrder}`}
@@ -83,7 +83,7 @@ const Product = () => {
                                 products?.map((product) => (
                                     <div key={product.id} className="border p-4 rounded shadow">
                                         <img
-                                            src={storageLink + product.image_url || '/placeholder.svg'}
+                                            src={product.image_url ? storageLink + product.image_url : '/placeholder.svg'}
                                             alt={product.name}
                                             className="w-full h-32 object-cover mb-2"
                                         />
@@ -96,11 +96,11 @@ const Product = () => {
                                         <p className="text-gray-600">Category: {product.category}</p>
                                         <p className="text-gray-600">Harga jual: {rupiah(product.harga_jual)}</p>
                                         <p className="text-gray-600">Harga modal: {rupiah(product.harga_modal)}</p>
-                                        <p className={`text-sm ${product.is_active ? 'text-green-500' : 'text-red-500'}`}> 
+                                        <p className={`text-sm ${product.is_active ? 'text-green-500' : 'text-red-500'}`}>
                                             {product.is_active ? 'Active' : 'Inactive'}
                                         </p>
                                         <div className="mt-4 flex justify-between">
-                                            <NavLink to={`/restock/${product.id}`} className="text-white w-full text-center bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
+                                            <NavLink to={`/restock/${product.id}`} className="text-white w-full text-center bg-teal-500 hover:bg-teal-600 px-4 py-2 rounded">
                                                 Restock
                                             </NavLink>
                                         </div>
@@ -112,7 +112,7 @@ const Product = () => {
                             <button
                                 onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                                 disabled={page === 1}
-                                className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                className="px-4 py-2 bg-teal-500 text-white rounded disabled:opacity-50"
                             >
                                 Previous
                             </button>
@@ -122,7 +122,7 @@ const Product = () => {
                             <button
                                 onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
                                 disabled={page === totalPages}
-                                className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                                className="px-4 py-2 bg-teal-500 text-white rounded disabled:opacity-50"
                             >
                                 Next
                             </button>
@@ -134,7 +134,7 @@ const Product = () => {
             <div className="flex justify-end mb-4 fixed bottom-10 right-1/2 translate-x-1/2">
                 <button
                     onClick={() => navigate('/product/create')}
-                    className=" px-6 py-4  bg-blue-500 text-white rounded-full font-bold  hover:bg-blue-600">
+                    className=" px-6 py-4  bg-teal-500 text-white rounded-full font-bold  hover:bg-teal-600">
                     Tambah Produk
                 </button>
             </div>

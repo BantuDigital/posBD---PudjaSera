@@ -56,8 +56,8 @@ const Dashboard = () => {
         <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
         <div className="flex-1 flex flex-col">
           <main className="flex-1 p-4 md:p-8 bg-white">
-            <div className="bg-blue-50 rounded-xl shadow p-4 md:p-8 min-h-[200px] md:min-h-[300px] border border-gray-100">
-              <h2 className="text-xl md:text-2xl font-bold mb-4 text-blue-700">Ringkasan</h2>
+            <div className="bg-teal-600 rounded-xl shadow p-4 md:p-8 min-h-[200px] md:min-h-[300px] border border-teal-100">
+              <h2 className="text-xl md:text-2xl font-bold mb-4 text-white">Ringkasan</h2>
               {/* Warning stok rendah */}
               {!loading && summary.warningLowStock && (
                 <div className="mb-4 p-3 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded">
@@ -76,25 +76,22 @@ const Dashboard = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-white rounded shadow p-4 border">
-                    <div className="text-gray-500 text-sm mb-1">Total Penjualan Hari Ini (Rp)</div>
-                    <div className="text-2xl font-bold text-blue-700"> {rupiah(summary.totalPenjualan)}</div>
+                    <div className="text-teal-500 text-sm mb-1">Total Penjualan Hari Ini (Rp)</div>
+                    <div className="text-2xl font-bold text-teal-700"> {rupiah(summary.totalPenjualan)}</div>
                   </div>
                   <div className="bg-white rounded shadow p-4 border">
-                    <div className="text-gray-500 text-sm mb-1">Total Laba Kotor Hari Ini (Rp)</div>
-                    <div className="text-2xl font-bold text-blue-700">{rupiah(summary.labaKotor)}</div>
+                    <div className="text-teal-500 text-sm mb-1">Total Laba Kotor Hari Ini (Rp)</div>
+                    <div className="text-2xl font-bold text-teal-700">{rupiah(summary.labaKotor)}</div>
                   </div>
                   <div className="bg-white rounded shadow p-4 border">
-                    <div className="text-gray-500 text-sm mb-1">Jumlah Order Hari Ini</div>
-                    <div className="text-2xl font-bold text-blue-700">{summary.jumlahOrder}</div>
+                    <div className="text-teal-500 text-sm mb-1">Jumlah Order Hari Ini</div>
+                    <div className="text-2xl font-bold text-teal-700">{summary.jumlahOrder}</div>
                   </div>
                   <div className="bg-white rounded shadow p-4 border">
-                    <div className="text-gray-500 text-sm mb-1">Jumlah Produk Terjual Hari Ini (pcs)</div>
-                    <div className="text-2xl font-bold text-blue-700">{Math.abs(summary.produkTerjual)}</div>
+                    <div className="text-teal-500 text-sm mb-1">Jumlah Produk Terjual Hari Ini (pcs)</div>
+                    <div className="text-2xl font-bold text-teal-700">{Math.abs(summary.produkTerjual)}</div>
                   </div>
-                  <div className="bg-white rounded shadow p-4 border">
-                    <div className="text-gray-500 text-sm mb-1">Order Pending</div>
-                    <div className="text-2xl font-bold text-blue-700">{summary.orderPending}</div>
-                  </div>
+                 
                 
                 </div>
               )}
