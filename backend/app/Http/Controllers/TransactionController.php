@@ -26,8 +26,7 @@ class TransactionController extends Controller
                 'transactions.harga_modal',
                 'transactions.harga_jual',
                 'products.name'
-            )->groupBy('transactions.id');
-
+            );
         // Search by transaction number or product name
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -36,13 +35,6 @@ class TransactionController extends Controller
             });
         }
 
-        // Filter by date range
-        if ($request->has('date_from')) {
-            $query->where('transactions.transaction_date', '>=', $request->input('date_from'));
-        }
-        if ($request->has('date_to')) {
-            $query->where('transactions.transaction_date', '<=', $request->input('date_to'));
-        }
 
         // Filter terbaru/terlama
         $order = $request->input('order', 'desc'); // default terbaru
