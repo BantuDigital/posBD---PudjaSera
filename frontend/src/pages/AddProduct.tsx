@@ -97,28 +97,30 @@ const AddProduct = () => {
                                 <input required type="text" name="name" value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan nama produk" />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Harga Jual <span className='text-red-500'>*</span></label>
+                                <label className="block text-sm font-medium text-gray-700">Harga Jual per Pcs / Buah / Satuan <span className='text-red-500'>*</span></label>
                                 <input
                                     required
                                     type="number"
+                                    min={1}
                                     value={product.harga_jual}
                                     onChange={(e) => setProduct({ ...product, harga_jual: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan harga jual"
                                 />
-                                <span className='text-sm font-bold'>Harga Jual adalah harga yang anda berikan kepada konsumen / tertera di pembelian</span>
+                                <span className='text-sm font-bold'>Harga Jual adalah harga yang anda berikan kepada konsumen / tertera di pembelian per Pcs / Buah / Satuan</span>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Harga Modal <span className='text-red-500'>*</span></label>
+                                <label className="block text-sm font-medium text-gray-700">Harga Modal per Pcs / Buah / satuan <span className='text-red-500'>*</span></label>
                                 <input
                                     required
                                     type="number"
+                                    min={1}
                                     value={product.harga_modal}
                                     onChange={(e) => setProduct({ ...product, harga_modal: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan harga modal"
                                 />
                                 <span className='text-sm font-bold'>Baca keterangan dibawah untuk penjelasan</span>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Stok <span className='text-red-500'>*</span> </label>
-                                <input required type="number" name="stock" value={product.stock} onChange={(e) => setProduct({ ...product, stock: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan stok" />
+                                <label className="block text-sm font-medium text-gray-700">Stok (Pcs/Buah/Satuan) <span className='text-red-500'>*</span> </label>
+                                <input required min={1} type="number" name="stock" value={product.stock} onChange={(e) => setProduct({ ...product, stock: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan stok" />
                             </div>
 
                             <div>

@@ -4,10 +4,12 @@ import Header from '../components/Header';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import rupiah from '../utils/currency';
+import { useNavigate } from 'react-router-dom';
 
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
   const [summary, setSummary] = useState({
     totalPenjualan: 0,
     jumlahOrder: 0,
@@ -29,7 +31,7 @@ const Dashboard = () => {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         setSummary(res.data);
-      } catch (err) {
+      } catch (err : any) {
         // Dummy jika gagal
         setSummary({
           totalPenjualan: 0,
@@ -42,6 +44,12 @@ const Dashboard = () => {
           warningLowStock: null,
           produkLowStock: [],
         });
+        if (err.status == 401) {
+          // Jika token tidak valid, redirect ke login
+          localStorage.removeItem('token');
+            navigate('/login');
+          
+        }
       } finally {
         setLoading(false);
       }
@@ -83,10 +91,7 @@ const Dashboard = () => {
                     <div className="text-teal-500 text-sm mb-1">Total Laba Kotor Hari Ini (Rp)</div>
                     <div className="text-2xl font-bold text-teal-700">{rupiah(summary.labaKotor)}</div>
                   </div>
-                  <div className="bg-white rounded shadow p-4 border">
-                    <div className="text-teal-500 text-sm mb-1">Jumlah Order Hari Ini</div>
-                    <div className="text-2xl font-bold text-teal-700">{summary.jumlahOrder}</div>
-                  </div>
+                  
                   <div className="bg-white rounded shadow p-4 border">
                     <div className="text-teal-500 text-sm mb-1">Jumlah Produk Terjual Hari Ini (pcs)</div>
                     <div className="text-2xl font-bold text-teal-700">{Math.abs(summary.produkTerjual)}</div>

@@ -27,9 +27,7 @@ class DashboardController extends Controller
         $totalPenjualan = (clone $trxQuery)
             ->sum(DB::raw('harga_jual * quantity'));
 
-        // Jumlah order
-        $jumlahOrder = (clone $trxQuery)->count();
-
+      
         // Total laba kotor (penjualan - total COGS)
         $totalCOGS = (clone $trxQuery)
             ->sum(DB::raw('harga_modal * quantity'));
@@ -53,7 +51,6 @@ class DashboardController extends Controller
 
         return response()->json([
             'totalPenjualan' => $totalPenjualan,
-            'jumlahOrder' => $jumlahOrder,
             'labaKotor' => $labaKotor,
             'produkTerjual' => $produkTerjual,
             'warningLowStock' => $warningLowStock,

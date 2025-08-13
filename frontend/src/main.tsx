@@ -5,10 +5,10 @@ import './index.css';
 import App from './App';
 import axios from 'axios';
 
-// axios.defaults.baseURL="https://api-mealikmu.bantudigital.org/api";
-// const storageLink = "https://api-mealikmu.bantudigital.org/public";
+// axios.defaults.baseURL="https://api-pujasera.bantudigital.org/api";
+const storageLink = "https://api-pujasera.bantudigital.org/public";
 axios.defaults.baseURL = "http://localhost:8000/api";
-const storageLink = "";
+// const storageLink = "";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

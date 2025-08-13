@@ -13,9 +13,10 @@ interface Transaction {
     quantity: number;
     total_harga: number;
     status: string;
-    harga_jual:number,
-    name:string,
-    harga_modal:number
+    harga_jual: number,
+    name: string,
+    harga_modal: number,
+    notes:string
 
 }
 
@@ -28,7 +29,7 @@ const TransactionList = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
- 
+
 
     const fetchTransactions = async () => {
         setLoading(true);
@@ -88,7 +89,7 @@ const TransactionList = () => {
                                     <div className="col-span-full text-center py-4">Tidak ada transaksi</div>
                                 ) : (
                                     transactions.map((trx) => (
-                                        <div key={trx.id } className="border p-4 rounded shadow bg-white flex flex-col justify-between">
+                                        <div key={trx.id} className="border p-4 rounded shadow bg-white flex flex-col justify-between">
                                             <div>
                                                 <div className="flex justify-between mb-2">
                                                     <span className="text-xs text-gray-500">{trx.transaction_date}</span>
@@ -102,16 +103,19 @@ const TransactionList = () => {
                                                     <span className="font-bold text-teal-700">{rupiah((trx.harga_jual - trx.harga_modal) * trx.quantity)}</span>
                                                 </div>
                                                 <hr className='my-2' />
-                                                   <div className="flex justify-between mb-2">
+                                                <div className="flex justify-between mb-2">
                                                     <span className="text-xs text-gray-500">Rincian Item</span>
                                                 </div>
                                                 <div className="flex justify-between mb-2">
-                                                    <span className="text-sm font-bold">{trx.name}</span>
+                                                    <div>
+                                                        <div className="text-sm font-bold">{trx.name}</div>
+                                                        <div className="text-xs text-gray-500">{trx.notes}</div>
+                                                    </div>
                                                     <span className="text-sm font-bold">{Math.abs(trx.quantity)} x {rupiah(trx.harga_jual)}</span>
 
                                                 </div>
 
-                                              
+
                                             </div>
                                         </div>
                                     ))

@@ -18,6 +18,7 @@ interface Product {
 const ReStockProduct = () => {
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>({
         name: '',
@@ -52,6 +53,7 @@ const ReStockProduct = () => {
         fetchProduct();
     }, []);
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        setIsLoading(true);
         e.preventDefault();
         const formData = new FormData();
         // Explicitly handle each field in the product object, skip 'price' (already appended)
@@ -90,8 +92,10 @@ const ReStockProduct = () => {
                     text: 'Gagal menambahkan produk : ' + error.response.data.message,
                 });
             }
+        }finally {
+            setIsLoading(false);
         }
-    };
+    }
 
     return (
         <div className="min-h-screen flex flex-col bg-white">
@@ -104,37 +108,39 @@ const ReStockProduct = () => {
                         <form className="space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Nama Produk <span className='text-red-500'>*</span></label>
-                                <input required type="text" name="name" value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan nama produk" />
+                                <input disabled type="text" name="name" value={product.name}  className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan nama produk" />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Harga Jual <span className='text-red-500'>*</span></label>
+                                <label className="block text-sm font-medium text-gray-700">Harga Jual per Pcs / Buah / Satuan<span className='text-red-500'>*</span></label>
                                 <input
                                     required
                                     type="number"
+                                    min={1}
                                     value={product.harga_jual}
                                     onChange={(e) => setProduct({ ...product, harga_jual: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan harga jual"
                                 />
                                 <span className='text-sm font-bold'>Baca keterangan dibawah untuk penjelasan</span>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Harga Modal <span className='text-red-500'>*</span></label>
+                                <label className="block text-sm font-medium text-gray-700">Harga Modal per Pcs / Buah / Satuan<span className='text-red-500'>*</span></label>
                                 <input
                                     required
                                     type="number"
+                                    min={1}
                                     value={product.harga_modal}
                                     onChange={(e) => setProduct({ ...product, harga_modal: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan harga modal"
                                 />
                                 <span className='text-sm font-bold'>Baca keterangan dibawah untuk penjelasan</span>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Jumlah Stok Baru <span className='text-red-500'>*</span> </label>
-                                <input required type="number" name="stockNew" value={product.stockNew} onChange={(e) => setProduct({ ...product, stockNew: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan stok" />
+                                <label className="block text-sm font-medium text-gray-700">Jumlah Stok Baru (Pcs/Buah/Satuan) <span className='text-red-500'>*</span> </label>
+                                <input min={1} required type="number" name="stockNew" value={product.stockNew} onChange={(e) => setProduct({ ...product, stockNew: parseFloat(e.target.value) })} className="mt-1 block w-full border p-2 rounded" placeholder="Masukkan stok" />
                                 <span className='text-sm font-bold'>Masukkan jumlah stok baru, BUKAN TOTAL STOK KESELURUHAN</span>
                             </div>
 
 
 
-                            <button type="submit" className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600 w-full">Simpan</button>
+                            <button disabled={isLoading} type="submit" className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600 w-full">{isLoading?"Loading...":"Simpan"}</button>
                         </form>
                         <h3 className='mt-4 font-bold'>
                             Keterangan :

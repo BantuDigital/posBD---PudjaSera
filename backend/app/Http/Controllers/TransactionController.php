@@ -88,7 +88,7 @@ class TransactionController extends Controller
             $transaction->quantity = $validated['quantity'];
             $transaction->harga_jual = $product->harga_jual;
             $transaction->harga_modal = $product->harga_modal;
-            $transaction->notes = $validated['notes'] || null;
+            $transaction->notes = $validated['notes'] ?? null;
             $transaction->save();
 
 
