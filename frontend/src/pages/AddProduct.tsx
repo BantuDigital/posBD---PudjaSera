@@ -149,10 +149,9 @@ const AddProduct = () => {
                         <ul className='list-disc pl-5'>
                             <li>
 
-                                <h3 className='mt-4 font-bold'>
+                                <span className='mt-4 font-bold'>
                                     (<span className='text-red-500'>*</span>) Wajib diisi
-
-                                </h3>
+                                </span>
                             </li>
                             <li>
                                 <span className='text-sm font-bold'>Harga Modal adalah harga yang anda keluarkan untuk memproduksi barang tersebut.

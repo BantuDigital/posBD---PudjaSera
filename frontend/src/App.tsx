@@ -9,6 +9,8 @@ import ReStockProduct from './pages/ReStockProduct';
 import TransactionList from './pages/TransactionList';
 import AddTransaction from './pages/AddTransaction';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import Operational from './pages/Operational';
+import OperationalCreate from './pages/OperationalCreate';
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +18,9 @@ function App() {
         <Route path="/login" element={<AuthPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/operational" element={<Operational />} />
+        <Route path="/operational/create" element={<OperationalCreate />} />
+
         <Route path="/product/create" element={<AddProduct />} />
         <Route path="/add-cogs/:productId" element={<AddCOGS />} />
         <Route path="/product/:productId" element={<EditProduct />} />

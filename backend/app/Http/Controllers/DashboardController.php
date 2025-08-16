@@ -17,10 +17,13 @@ class DashboardController extends Controller
 
         // Query builder untuk filter tanggal transaksi
         $trxQuery = DB::table('transactions');
+        $operationalQuery = DB::table('operationals');
         if ($end) {
             $trxQuery->whereBetween('transaction_date', [$start, $end]);
+            $operationalQuery->whereBetween('date', [$start, $end]);
         } else {
             $trxQuery->whereDate('transaction_date', $start);
+            $operationalQuery->whereDate('date', $start);
         }
 
         // Total penjualan
@@ -37,7 +40,9 @@ class DashboardController extends Controller
         $produkTerjual = (clone $trxQuery)
             ->sum('quantity');
 
-        
+        // Total biaya operasional
+        $totalOperational = (clone $operationalQuery)
+            ->sum('total');
 
         // Cari produk dengan stok di bawah 5
         $produkLowStock = DB::table('products')
@@ -52,6 +57,7 @@ class DashboardController extends Controller
         return response()->json([
             'totalPenjualan' => $totalPenjualan,
             'labaKotor' => $labaKotor,
+            'operationalCost' => $totalOperational,
             'produkTerjual' => $produkTerjual,
             'warningLowStock' => $warningLowStock,
             'produkLowStock' => $produkLowStock,

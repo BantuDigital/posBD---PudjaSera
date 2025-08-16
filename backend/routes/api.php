@@ -21,6 +21,7 @@ use App\Http\Controllers\COGSController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OperationalController;
 use App\Http\Controllers\TransactionController;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -31,16 +32,19 @@ Route::get('/products/{productId}/cogs', [COGSController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
-
-
+    
+    
     Route::get('/products/{productId}', [ProductController::class, 'show']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/restock/{productId}', [ProductController::class, 'restock']);
     Route::put('/products/{productId}', [ProductController::class, 'update']);
-
-    Route::get('/buyers', [BuyerController::class, 'index']);
+    
     Route::get('/transactions', [TransactionController::class, 'index']);
     Route::post('/transactions', [TransactionController::class, 'store']);
     Route::post('/transactions/{transaction}/status', [TransactionController::class, 'status']);
+
+    Route::get('/operationals', [OperationalController::class, 'index']);
+    Route::post('/operationals', [OperationalController::class, 'store']);
+    Route::delete('/operationals/{operational}', [OperationalController::class, 'destroy']);
 });
 

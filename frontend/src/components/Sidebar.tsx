@@ -27,7 +27,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
                     <NavLink to="/dashboard" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <LayoutDashboard /> Dashboard</NavLink>
                     <NavLink to="/product" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <ShoppingCart /> Produk</NavLink>
                     <NavLink to="/transaction" className={({ isActive }) => `block py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <ArrowLeftRight /> Transaksi</NavLink>
-                    <NavLink to="/operasional" onClick={() => Swal.fire("Coming Soon")} className={({ isActive }) => `block  py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <BanknoteArrowDown /> Operasional</NavLink>
+                    <NavLink to="/operational"  className={({ isActive }) => `block  py-2 px-4 rounded-lg font-medium transition ${isActive ? 'bg-teal-50 text-teal-700' : 'text-gray-700 hover:bg-teal-50'}`}> <BanknoteArrowDown /> Operasional</NavLink>
                 </nav>
                     <div className="flex justify-between  rounded-full bg-teal-700 p-6">
                         <div onClick={logout} className="px-4 h-fit text-white rounded-lg hover:bg-teal-100 transition font-semibold cursor-pointer">Logout</div>
